@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script type="text/javascript">
+        window.onload = function() {
+            var dps = []; //dataPoints. 
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "V Number"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: dps
+                }]
+            });
+
+            function addDataPointsAndRender() {
+                xValue = Number(document.getElementById("xValue").value);
+                ncore = Number(document.getElementById("ncore").value);
+                ncladding = Number(document.getElementById("ncladding").value);
+                coreRadius = Number(document.getElementById("coreRadius").value);
+                ncoresq = Math.pow(ncore, 2);
+                ncladdingsq = Math.pow(ncladding, 2);
+                Nsq = ncoresq - ncladdingsq;
+                N = Math.sqrt(Nsq);
+                a = coreRadius*Math.pow(10, -6);
+                lambda = xValue*Math.pow(10, -9);
+                Vnumber = 2*Math.PI*a*N/lambda;
+                dps.push({
+                    x: xValue,
+                    y: parseFloat((Math.round(Vnumber * 100) / 100).toPrecision(3))
+                });
+                chart.render();
+            }
+
+            var renderButton = document.getElementById("renderButton");
+            renderButton.addEventListener("click", addDataPointsAndRender);
+        }
+    </script>
+    <script type="text/javascript" src="./canvasjs.min.js"></script>
+</head>
+
+<body>
+    <b>λ</b>:
+    <input id="xValue" type="number" step="any" placeholder="Wavelength in nm">
+    <b>n<sub>o</sub></b>: 
+    <input id="ncore" type="number" step="any" placeholder="core index">
+    <b>n<sub>l</sub></b>: 
+    <input id="ncladding" type="number" step="any" placeholder="cladding index">
+    <b>c<sub>r</sub></b>: 
+    <input id="coreRadius" type="number" step="any" placeholder="core radius in μm"> 
+    <button id="renderButton">V number</button>
+    <div id="chartContainer" style="height: 270px; width: 100%;">
+    </div>
+</body>
+
+</html>

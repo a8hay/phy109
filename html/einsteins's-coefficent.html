@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script type="text/javascript">
+        window.onload = function() {
+            var dps = []; //dataPoints. 
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "Einstein's coefficient"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: dps
+                }]
+            });
+
+            function addDataPointsAndRender() {
+                xValue = Number(document.getElementById("xValue").value);
+                constant = 8*3.14*6.23*Math.pow(10, -34)*1; // yaha air ka refractive index mana hain
+                dps.push({
+                    x: xValue,
+                    y: constant/Math.pow(xValue, 3)
+                });
+                chart.render();
+            }
+
+            var renderButton = document.getElementById("renderButton");
+            renderButton.addEventListener("click", addDataPointsAndRender);
+        }
+    </script>
+    <script type="text/javascript" src="./canvasjs.min.js"></script>
+</head>
+
+<body>
+    <b>λ</b>:
+    <input id="xValue" type="number" step="any" placeholder="Wavelength"> 
+    <button id="renderButton">add input</button>
+    <div id="chartContainer" style="height: 270px; width: 100%;">
+    </div>
+</body>
+
+</html>
